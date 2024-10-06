@@ -17,13 +17,12 @@ cloudinary.config({
     api_key: process.env.API_KEY,
     api_secret: process.env.API_SECRET 
 })
-console.log(process.env.CLOUD_NAME,process.env.API_KEY,process.env.API_SECRET);
 
 const PORT = process.env.PORT || 3000;
 
 // Configure CORS options
 const corsOptions = {
-    origin: "http://localhost:5173",
+    origin: "https://gaurav-jobhunt.netlify.app/",
     credentials: true, // Allow cookies to be sent with requests
 };
 
