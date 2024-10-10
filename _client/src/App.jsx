@@ -24,7 +24,6 @@ import SubmitApplication from './pages/SubmitApplication';
 import SubmitApplicationSuccess from './components/shared/SubmitApplicationSuccess';
 import ViewApplicants from './components/admin/ViewApplicants';
 import Messages from './pages/Messages';
-// import { clearError } from './features/AuthSlice';
 import io from "socket.io-client"
 import { setNewMessage, setNotificationCount, setNotifications, setSocket, setUnreadMessageObjByKey } from './features/SocketSlice';
 import { setMessages } from './features/ConversationSlice';
@@ -37,7 +36,6 @@ const App = () => {
   const { user, userLoading } = useSelector((state) => state.user);
   const { selectedUser } = useSelector((state) => state.conversation);
   const { notifications, notificationCount, socket, newMessage, unreadMessageObj } = useSelector((state) => state.socket);
-  // const { usernameAndProfile } = useSelector((state) => state.user);
   const { messages } = useSelector((state) => state.conversation);
   const { jobLoading } = useSelector((state) => state.job);
   const [footer, setFooter] = useState(true)
@@ -50,7 +48,7 @@ const App = () => {
 
   useEffect(() => {
     if (user) {
-      const socket = io("http://localhost:8000", {
+      const socket = io("https://job-hunt-kappa-three.vercel.app", {
         query: {
           userId: user._id
         }

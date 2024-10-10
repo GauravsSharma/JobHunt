@@ -23,7 +23,7 @@ const PORT = process.env.PORT || 3000;
 // Configure CORS options
 const corsOptions = {
     origin: "https://gaurav-jobhunt.netlify.app",
-    credentials: true, // Allow cookies to be sent with requests
+    credentials: true,
 };
 
 // Apply CORS middleware before routes

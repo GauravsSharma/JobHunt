@@ -8,8 +8,8 @@ const userIdToSocketIdMap = {};
 const socketIdToUserIdMap = {};
 const io = new Server(server, {
     cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
+        origin: "https://gaurav-jobhunt.netlify.app",
+        credentials: true,
     }
 })
 io.on("connection", (socket) => {
@@ -24,11 +24,11 @@ io.on("connection", (socket) => {
     socket.on("profile_view", (id) => {
         const socketIdOfWhosProfileIsViewed = userIdToSocketIdMap[id]
         const usrIdOfWhoViewedProfile = socketIdToUserIdMap[socket.id]
-        io.to(socketIdOfWhosProfileIsViewed).emit("profile_view",usrIdOfWhoViewedProfile)
+        io.to(socketIdOfWhosProfileIsViewed).emit("profile_view", usrIdOfWhoViewedProfile)
     })
-    socket.on("status_changed",(status)=>{
+    socket.on("status_changed", (status) => {
         const socketIdOfWhosProfileIsViewed = userIdToSocketIdMap[status.applicantId]
-        io.to(socketIdOfWhosProfileIsViewed).emit("status_changed",status)
+        io.to(socketIdOfWhosProfileIsViewed).emit("status_changed", status)
     })
 })
 

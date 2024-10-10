@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom'
 
 const Messages = ({ setFooter,setMobileNav }) => {
   const [isSideBar, setIsSideBar] = useState(true);
+  const [loading,setLoading] = useState(false);
   const { singleApplication } = useSelector(store => store.application);
   const { contact } = useSelector(store => store.conversation);
   const {unreadMessageObj} = useSelector((state) => state.socket);
@@ -16,7 +17,9 @@ const Messages = ({ setFooter,setMobileNav }) => {
   const { id } = useParams();
   useEffect(() => {
     const getConversations = async () => {
+      setLoading(true)
       await dispatch(getConversation())
+      setLoading(false);
       if (id) {
         const checkUserExistsInTheContact = contact.some((con)=>{
           return con.profile._id===singleApplication.applicants._id
@@ -25,7 +28,6 @@ const Messages = ({ setFooter,setMobileNav }) => {
            dispatch(setContact([singleApplication.applicants,...contact]))
         }
       }
-     
     }
     getConversations()
   }, [])
@@ -59,6 +61,7 @@ const Messages = ({ setFooter,setMobileNav }) => {
       <Sidebar
         setIsSideBar={setIsSideBar}
         isSideBar={isSideBar}
+        conversationLoading={loading}
       />
       {/* chat */}
       <Chat
