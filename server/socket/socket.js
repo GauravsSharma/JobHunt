@@ -8,8 +8,9 @@ const userIdToSocketIdMap = {};
 const socketIdToUserIdMap = {};
 const io = new Server(server, {
     cors: {
-        origin: "https://gaurav-jobhunt.netlify.app",
+        origin: ["https://gaurav-jobhunt.netlify.app","http://localhost:5173"],
         credentials: true,
+        methods:["GET","POST"]
     }
 })
 io.on("connection", (socket) => {

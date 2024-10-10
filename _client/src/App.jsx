@@ -48,7 +48,7 @@ const App = () => {
 
   useEffect(() => {
     if (user) {
-      const socket = io("https://job-hunt-kappa-three.vercel.app", {
+      const socket = io("https://jobhunt-iq3t.onrender.com", {
         query: {
           userId: user._id
         }
@@ -61,17 +61,15 @@ const App = () => {
     if (!socket) return;  // Ensure socket is available before adding listeners
     const handleNewMessage = (new_message) => {
       dispatch(setMessages([...messages, new_message]));
-      dispatch(getConversation())
-      // Update messages
 
       if (!selectedUser) {
         if (unreadMessageObj) {
+          dispatch(getConversation())
           let count = unreadMessageObj[new_message?.senderId];
           count = count + 1;
           dispatch(setUnreadMessageObjByKey({ count, senderId: new_message.senderId }))
         }
         if (location.pathname !== "/messages") {
-        
           getUserName(new_message.senderId).then((data) => {
             toast.message(`New message from ${data.fullname}`);
             const count = newMessage + 1;
@@ -83,10 +81,12 @@ const App = () => {
             dispatch(setNotifications([...notifications, notificationObj]))
           });
         }
+        return;
       }
 
-      if (new_message.senderId !== selectedUser?._id) {
+      else if (new_message.senderId !== selectedUser?._id) {
         if (unreadMessageObj) {
+          dispatch(getConversation())
           let count = unreadMessageObj[new_message?.senderId];
           count = count + 1;
           dispatch(setUnreadMessageObjByKey({ count, senderId: new_message.senderId }))
@@ -118,15 +118,15 @@ const App = () => {
       });
     };
     const handleApplicationStatusChanged = (status) => {
-       toast.message("Appication status changed");
-       const count = notificationCount + 1;
-       dispatch(setNotificationCount(count))
-       const notificationObj = {
-         type: "status_changed",
-         data:status.status
-       }
-       
-       dispatch(setNotifications([...notifications, notificationObj]))
+      toast.message("Appication status changed");
+      const count = notificationCount + 1;
+      dispatch(setNotificationCount(count))
+      const notificationObj = {
+        type: "status_changed",
+        data: status.status
+      }
+
+      dispatch(setNotifications([...notifications, notificationObj]))
     }
     socket.on("new_message", handleNewMessage);
     socket.on("profile_view", handleProfileView);
@@ -241,7 +241,7 @@ const App = () => {
   return (
     <>
       <Navbar mobileNav={mobileNav} />
-      <ScrollToTop/>
+      <ScrollToTop />
       <Routes>
         {appRouter.map((routes, i) => (
           <Route key={i} element={routes.element} path={routes.path} />

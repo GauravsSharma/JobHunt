@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import OtherUser from './OtherUser'
 import { Input } from '../ui/input'
 import { useSelector } from 'react-redux'
@@ -11,6 +11,25 @@ const Sidebar = ({
 }) => {
   const { contact: contacts } = useSelector(store => store.conversation)
   const { unreadMessageObj } = useSelector((state) => state.socket);
+  const [filteredContact,setFilteredContact] = useState(contacts||null)
+  const handleOnChange = (e) => {
+    const text = e.target.value;
+    if (contacts && text) {
+      const filteredContact = contacts.filter((con) =>
+        con.name.toLowerCase().includes(text.toLowerCase())
+      );
+      setFilteredContact(filteredContact);
+    } else {
+      setFilteredContact(contacts);
+    }
+  };
+  
+  useEffect(()=>{
+   if(contacts){
+    setFilteredContact(contacts);
+   }
+  },[contacts])
+  
   if (conversationLoading) {
     return   <div className={`lg:w-[25%] w-full absolute top-0 ${isSideBar ? "left-0 " : "-left-full "}  sm:bg-transparent bg-[#020021] p-6 lg:static md:p-10 lg:p-5 h-full border-r shadow-xl z-20 duration-300`}>
     <Loader2/>
@@ -19,10 +38,11 @@ const Sidebar = ({
   return (
     <div className={`lg:w-[25%] w-full absolute top-0 ${isSideBar ? "left-0 " : "-left-full "}  sm:bg-transparent bg-[#020021] p-6 lg:static md:p-10 lg:p-5 h-full border-r shadow-xl z-20 duration-300`}>
       <div className="flex w-full mb-5">
-        <Input className="bg-blue-950 border-blue-950" placeholder="Search people here..." />
+        <Input className="bg-blue-950 border-blue-950" placeholder="Search people here..." 
+        onChange = {handleOnChange}/>
       </div>
       {
-        contacts?.map((contact) => (
+        filteredContact?.map((contact) => (
           <OtherUser
             key={contact.profile._id}
             id={contact.profile._id}
