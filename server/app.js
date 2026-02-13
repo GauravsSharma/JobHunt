@@ -9,7 +9,6 @@ import job from "./routes/job.js";
 import message from "./routes/message.js";
 import application from "./routes/application.js";
 import cloudinary from "cloudinary"
-import { server,app } from "./socket/socket.js";
 
 dotenv.config({});
 cloudinary.config({
@@ -18,6 +17,7 @@ cloudinary.config({
     api_secret: process.env.API_SECRET 
 })
 
+const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Configure CORS options
@@ -40,9 +40,20 @@ app.use("/api/v1", job);
 app.use("/api/v1/application", application);
 app.use("/api/v1/message", message);
 
-
 connectToDatabase();
 
-server.listen(PORT, () => {
+app.get("/",(req,res)=>{
+    res.status(200).json({
+        success:true,
+        message:"App is up and running."
+    })
+})
+app.get("/health",(req,res)=>{
+    res.status(200).json({
+        success:true,
+        message:"Health check is succeed."
+    })
+})
+app.listen(PORT, () => {
     console.log(`Server running at port ${PORT}`);
 });

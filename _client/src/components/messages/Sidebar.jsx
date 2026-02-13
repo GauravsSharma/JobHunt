@@ -15,8 +15,10 @@ const Sidebar = ({
   const handleOnChange = (e) => {
     const text = e.target.value;
     if (contacts && text) {
+      console.log(text);
+      
       const filteredContact = contacts.filter((con) =>
-        con.name.toLowerCase().includes(text.toLowerCase())
+        con.profile.fullname.toLowerCase().includes(text.toLowerCase())
       );
       setFilteredContact(filteredContact);
     } else {
@@ -29,7 +31,7 @@ const Sidebar = ({
     setFilteredContact(contacts);
    }
   },[contacts])
-  
+
   if (conversationLoading) {
     return   <div className={`lg:w-[25%] w-full absolute top-0 ${isSideBar ? "left-0 " : "-left-full "}  sm:bg-transparent bg-[#020021] p-6 lg:static md:p-10 lg:p-5 h-full border-r shadow-xl z-20 duration-300`}>
     <Loader2/>

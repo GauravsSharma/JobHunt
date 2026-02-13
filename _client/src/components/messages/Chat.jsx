@@ -67,9 +67,9 @@ const Chat = ({setIsSideBar}) => {
       </div>
       <form onSubmit={handleSubmit} className='w-full md:static absolute bottom-1 left-0 gap-2 flex justify-center items-center'>
         <Input className="w-[90%] md:w-[70%] rounded-full  bg-blue-950" placeholder="Type message..." value={message} onChange = {(e)=>setMessage(e.target.value)} />
-        <div className="bg-blue-950 cursor-pointer text-white text-xl rounded-full h-12 w-12 flex justify-center items-center border">
+        <button type='submit' className="bg-blue-950 cursor-pointer text-white text-xl rounded-full h-12 w-12 flex justify-center items-center border">
           <IoMdSend className='ml-1' />
-        </div>
+        </button>
       </form>
     </div>
   )
