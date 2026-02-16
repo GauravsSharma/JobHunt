@@ -16,12 +16,13 @@ jobs:
 
     - name: Deploye via SSH
       uses: appleboy/ssh-action@v1.0.3
-      
+
       with:
         host: ${{secrets.SSH_HOST}}
         username: root
         key: ${{secrets.SSH_KEY}}
         script: | 
           cd JobHunt/server
-          git pull
+          git fetch origin
+          git reset --hard origin/main
           pm2 reload app
