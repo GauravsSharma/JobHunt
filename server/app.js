@@ -45,7 +45,7 @@ connectToDatabase();
 app.get("/",(req,res)=>{
     res.status(200).json({
         success:true,
-        message:"App is up and running v3."
+        message:"App is up and running"
     })
 })
 app.get("/health",(req,res)=>{
