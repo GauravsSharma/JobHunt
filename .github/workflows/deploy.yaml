@@ -25,4 +25,7 @@ jobs:
           cd JobHunt/server
           git fetch origin
           git reset --hard origin/main
+          export NVM_DIR="$HOME/.nvm"
+          source $NVM_DIR/nvm.sh
+          nvm use 24.13.1
           pm2 reload app
