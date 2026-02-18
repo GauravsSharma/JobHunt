@@ -79,7 +79,7 @@ export const getJobs = async (req, res) => {
         if (salary) {
             query.salary = { $gte: parseInt(salary) }
         }
-        
+
         const [jobs, totalJobs] = await Promise.all([
             JobModel.find(query)
                 .populate({
@@ -130,7 +130,7 @@ export const getInternships = async (req, res) => {
             ? (location.includes(",") ? location.split(",") : [location])
             : [];
 
-     const query = {
+        const query = {
             jobType: "internship"
         };
 
@@ -148,11 +148,14 @@ export const getInternships = async (req, res) => {
         if (salary) {
             query.salary = { $gte: parseInt(salary) }
         }
-        
+
         const [jobs, totalJobs] = await Promise.all([
             JobModel.find(query)
-                .populate("company", "name logo")
-                .populate("created_by", "fullname email")
+                .populate({
+                    path: "company",
+                    select: "name logo"
+                })
+                .select("name _id location title description createdAt jobType experience_level salary requirement")
                 .sort({ createdAt: -1 })
                 .skip(skip)
                 .limit(limit),
