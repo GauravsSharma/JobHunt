@@ -22,7 +22,7 @@ const PORT = process.env.PORT || 3000;
 
 // Configure CORS options
 const corsOptions = {
-    origin: ["https://gaurav-jobhunt.netlify.app","http://localhost:5173"],
+    origin: ["https://career-wave-one.vercel.app/","http://localhost:5173"],
     credentials: true,
 };
 
