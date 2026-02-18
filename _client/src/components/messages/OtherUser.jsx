@@ -3,8 +3,6 @@ import { Avatar, AvatarFallback } from '../ui/avatar'
 import { AvatarImage } from '@radix-ui/react-avatar'
 import { setSelectedUser } from '@/features/ConversationSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import NotificationBadge from 'react-notification-badge/lib/components/NotificationBadge'
-import { Effect } from 'react-notification-badge'
 import { setUnreadMessageObjByKey } from '@/features/SocketSlice'
 
 const OtherUser = ({profileUrl,name,user,setIsSideBar,message,unreadMessage,id}) => {
@@ -30,11 +28,7 @@ const OtherUser = ({profileUrl,name,user,setIsSideBar,message,unreadMessage,id})
                 <p className='text-sm text-slate-300'>{message}</p>
             </div>
             <div className="flex justify-center items-center h-10 w-10">
-                <NotificationBadge
-                   count={unreadMessage}
-                   effect={Effect.SCALE}
-                   className={"bg-blue-950"}
-                />
+               
             </div>
         </div>
     )

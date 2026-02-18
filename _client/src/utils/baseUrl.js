@@ -1,5 +1,5 @@
-export const jobBaseUrl = "https://jobhunt-iq3t.onrender.com/api/v1";
-export const userBaseUrl = "https://jobhunt-iq3t.onrender.com/api/v1/user";
-export const applicantionBaseUrl = "https://jobhunt-iq3t.onrender.com/api/v1/application";
-export const companyBaseUrl = "https://jobhunt-iq3t.onrender.com/api/v1/company";
-export const conversationBaseUrl = "https://jobhunt-iq3t.onrender.com/api/v1/message";
+export const jobBaseUrl = import.meta.env.VITE_API_URL;
+export const userBaseUrl = `${import.meta.env.VITE_API_URL}/user`;
+export const applicantionBaseUrl = `${import.meta.env.VITE_API_URL}/application`;
+export const companyBaseUrl = `${import.meta.env.VITE_API_URL}/company`;
+export const conversationBaseUrl = `${import.meta.env.VITE_API_URL}/message`;

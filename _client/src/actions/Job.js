@@ -90,44 +90,64 @@ export const getJobById = createAsyncThunk(
 );
 export const getInternshipsByQuery = createAsyncThunk(
     "job/internships/query",
-    async ({keywords,location,salary}, { rejectWithValue }) => {
+    async ({ keywords, location, salary,page }, { rejectWithValue }) => {
         const token = JSON.parse(localStorage.getItem("token"));
+
         try {
-            const { data } = await axios.get(`${jobBaseUrl}/getInternships?keyword=${keywords}&location=${location}&salary=${salary}`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            return data.jobs;
+            const { data } = await axios.get(
+                `${jobBaseUrl}/getInternships`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    params: {
+                        ...(keywords && { keyword: keywords }),
+                        ...(location && { location }),
+                        ...(salary && { salary }),
+                        page
+                    }
+                }
+            );
+
+            return data;
+
         } catch (error) {
-            console.log(error.response.data.message);
-            return rejectWithValue(error.response.data.message);
+            return rejectWithValue(error.response?.data?.message);
         }
     }
 );
+
 export const getJobsByQuery = createAsyncThunk(
     "job/query",
-    async ({keywords,location,salary}, { rejectWithValue }) => {
-        const token = JSON.parse(localStorage.getItem("token"));        
-        try {     
-         
-            console.log(salary);
-            
-            const { data } = await axios.get(`${jobBaseUrl}/getJobs?keyword=${keywords}&location=${location}&salary=${salary}`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            console.log(`${jobBaseUrl}/getJobs?keyword=${keywords}&location=${location}&salary=${salary}`);
-            
-            return data.jobs;
+    async ({ keywords, location, salary,page }={}, { rejectWithValue }) => {
+        const token = JSON.parse(localStorage.getItem("token"));
+        console.log("check")
+        try {
+            const { data } = await axios.get(
+                `${jobBaseUrl}/getJobs`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    params: {
+                        ...(keywords && { keyword: keywords }),
+                        ...(location && { location }),
+                        ...(salary && { salary }),
+                        page
+                    }
+                }
+            );
+
+            return data;
+
         } catch (error) {
-           return rejectWithValue(error.response.data.message);
+            return rejectWithValue(error.response?.data?.message);
         }
     }
 );
+
 export const getJobsPostedByAdmin = createAsyncThunk(
     "admin/jobs",
     async (_, { rejectWithValue }) => {

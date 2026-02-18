@@ -9,9 +9,12 @@ import { useNavigate } from "react-router-dom"
 const Home = () => {
   const {user} = useSelector((store)=>store.user);
   const navigate = useNavigate();
-  useEffect(()=>{
-    if(user?.role==="recruiter") navigate("/admin/companies")
-  },[])
+  // useEffect(()=>{
+  //   if(user?.role==="recruiter") navigate("/admin/companies")
+  //     console.log("User..................");
+  // },[])
+  console.log("helloooo ");
+  
   return (
       <>
       <Hero/>

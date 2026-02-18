@@ -6,13 +6,19 @@ const jobSlice = createSlice({
     name: "job",
     initialState: {
         jobs: [],
-        singleJob:null,
-        jobLoading:false,
-        adminJobs:[],
-        error:null,
-        message:"",
-        locations:[],
-        titles:[]
+        singleJob: null,
+        jobLoading: false,
+        adminJobs: [],
+        error: null,
+        message: "",
+        locations: [],
+        titles: [],
+        currentPage: 1,
+        totalPages: 1,
+        totalJobs: 0,
+        hasNextPage: false,
+        hasPrevPage: false,
+
     },
     extraReducers: (builder) => {
         builder
@@ -39,6 +45,7 @@ const jobSlice = createSlice({
                 state.error = action.payload;
             })
             .addCase(getInternships.pending, (state) => {
+                console.log("loogging from getjobs");
                 state.jobLoading = true;
             })
             .addCase(getInternships.fulfilled, (state, action) => {
@@ -94,32 +101,60 @@ const jobSlice = createSlice({
                 state.jobLoading = false;
                 state.error = action.payload;
             })
-            .addCase(getInternshipsByQuery.pending, (state) => {
+         .addCase(getInternshipsByQuery.pending, (state) => {
                 state.jobLoading = true;
             })
             .addCase(getInternshipsByQuery.fulfilled, (state, action) => {
                 state.jobLoading = false;
-                state.jobs = action.payload;
+                const { jobs, page, totalPages, totalJobs, hasNextPage, hasPrevPage } = action.payload;
+
+                if (page === 1) {
+                    state.jobs = jobs;           // fresh search → replace
+                } else {
+                    const existingIds = new Set(state.jobs.map((j) => j._id));
+                    const newJobs = jobs.filter((j) => !existingIds.has(j._id));
+                    state.jobs = [...state.jobs, ...newJobs];   // load more → append
+                }
+
+                state.currentPage = page;
+                state.totalPages = totalPages;
+                state.totalJobs = totalJobs;
+                state.hasNextPage = hasNextPage;
+                state.hasPrevPage = hasPrevPage;
             })
             .addCase(getInternshipsByQuery.rejected, (state, action) => {
                 state.jobLoading = false;
-                state.error = action.payload;                
-                state.jobs = []
+                state.error = action.payload;
+                state.jobs = [];
             })
             .addCase(getJobsByQuery.pending, (state) => {
                 state.jobLoading = true;
             })
             .addCase(getJobsByQuery.fulfilled, (state, action) => {
                 state.jobLoading = false;
-                state.jobs = action.payload;
+                const { jobs, page, totalPages, totalJobs, hasNextPage, hasPrevPage } = action.payload;
+
+                if (page === 1) {
+                    state.jobs = jobs;           // fresh search → replace
+                } else {
+                    const existingIds = new Set(state.jobs.map((j) => j._id));
+                    const newJobs = jobs.filter((j) => !existingIds.has(j._id));
+                    state.jobs = [...state.jobs, ...newJobs];   // load more → append
+                }
+
+                state.currentPage = page;
+                state.totalPages = totalPages;
+                state.totalJobs = totalJobs;
+                state.hasNextPage = hasNextPage;
+                state.hasPrevPage = hasPrevPage;
             })
             .addCase(getJobsByQuery.rejected, (state, action) => {
                 state.jobLoading = false;
-                state.error = action.payload;                
-                state.jobs = []
+                state.error = action.payload;
+                state.jobs = [];
             })
             .addCase("CLEAR_ERROR", (state) => {
-                state.error = null;                
+                state.error = null;
             })
     }
 })

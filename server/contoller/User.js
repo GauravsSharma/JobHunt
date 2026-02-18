@@ -50,9 +50,11 @@ export const register = async (req, res) => {
       message: "Register Success"
     })
   } catch (error) {
+    console.log(error);
+    
     res.status(500).json({
       success: false,
-      message: error
+      message: error.message
     })
   }
 }

@@ -29,7 +29,7 @@ const FilterSidebar = ({
                 return { value: location.split(",")[0].toLowerCase(), label: location.split(",")[0] }
             })
             setJobLocations(locationsObj)
-            console.log(locationsObj);
+        
             
         }
         if (titles) {
@@ -73,8 +73,8 @@ const FilterSidebar = ({
                 backgroundColor: '#334155',  // Background color when hovering over the remove icon
                 color: 'white',
             },
+            input: (provided) => ({
         }),
-        input: (provided) => ({
             ...provided,
             color: 'white',  // Text color when typing
         }),

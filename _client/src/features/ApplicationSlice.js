@@ -14,6 +14,7 @@ const jobSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(applyJob.pending, (state) => {
+                
                 state.applicationLoading = true;
             })
             .addCase(applyJob.fulfilled, (state, action) => {

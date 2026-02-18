@@ -25,11 +25,10 @@ import { toast, Toaster } from "sonner";
 import { logout } from '@/actions/Auth';
 import MobileNav from './MobileNav';
 import { setSelectedUser } from '@/features/ConversationSlice';
-import NotificationBadge from 'react-notification-badge/lib/components/NotificationBadge';
-import { Effect } from 'react-notification-badge';
-const Navbar = ({mobileNav}) => {
+
+const Navbar = ({ mobileNav }) => {
     const { user } = useSelector((state) => state.user);
-    const { notificationCount,newMessage } = useSelector((state) => state.socket);
+    const { notificationCount, newMessage } = useSelector((state) => state.socket);
     const navigate = useNavigate()
     const [isDialogBoxOpen, setIsDialogBoxOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -51,42 +50,23 @@ const Navbar = ({mobileNav}) => {
     return (
         <div className='h-16 px-8 md:px-12 flex justify-between items-center w-full'>
             <Link to="/" className='flex justify-center items-center'>
-                <img src={logo} alt="" className='h-10 hidden sm:block'/>
-                <img src={logoForMobile} alt="" className='h-10 block sm:hidden'/>
-                
-                </Link>
-            <ul className='hidden sm:flex justify-center h-full items-center gap-10'>      
-               {
-                user?.role==="recruiter"?<>
-                 <NavLink to="/admin/companies" className={({ isActive }) => `flex px-1  font-semibold items-center text-sm h-full ${isActive ? 'text-blue-400 font-bold' : ''} duration-300`} >Companies</NavLink>
-                 <NavLink to="/admin/jobs" className={({ isActive }) => `flex px-1  font-semibold items-center text-sm h-full ${isActive ? 'text-blue-400 font-bold' : ''} duration-300`} >Jobs</NavLink>
-                </>:<>
-                <NavLink to="/" className={({ isActive }) => `flex px-1  font-semibold items-center text-sm h-full ${isActive ? 'text-blue-400 font-bold' : ''} duration-300`} >Home</NavLink>
-                <NavLink to="/internships" className={({ isActive }) => `flex px-1  font-semibold items-center text-sm h-full ${isActive ? 'text-blue-400 font-bold' : ''} duration-300`} >Internships</NavLink>
-                <NavLink to="/jobs" className={({ isActive }) => `flex px-1  font-semibold items-center text-sm h-full ${isActive ? 'text-blue-400 font-bold' : ''} duration-300`} >Jobs</NavLink></>
-               }
+                <img src={logo} alt="" className='h-10 hidden sm:block' />
+                <img src={logoForMobile} alt="" className='h-10 block sm:hidden' />
+
+            </Link>
+            <ul className='hidden sm:flex justify-center h-full items-center gap-10'>
+                {
+                    user?.role === "recruiter" ? <>
+                        <NavLink to="/admin/companies" className={({ isActive }) => `flex px-1  font-semibold items-center text-sm h-full ${isActive ? 'text-blue-400 font-bold' : ''} duration-300`} >Companies</NavLink>
+                        <NavLink to="/admin/jobs" className={({ isActive }) => `flex px-1  font-semibold items-center text-sm h-full ${isActive ? 'text-blue-400 font-bold' : ''} duration-300`} >Jobs</NavLink>
+                    </> : <>
+                        <NavLink to="/" className={({ isActive }) => `flex px-1  font-semibold items-center text-sm h-full ${isActive ? 'text-blue-400 font-bold' : ''} duration-300`} >Home</NavLink>
+                        <NavLink to="/internships" className={({ isActive }) => `flex px-1  font-semibold items-center text-sm h-full ${isActive ? 'text-blue-400 font-bold' : ''} duration-300`} >Internships</NavLink>
+                        <NavLink to="/jobs" className={({ isActive }) => `flex px-1  font-semibold items-center text-sm h-full ${isActive ? 'text-blue-400 font-bold' : ''} duration-300`} >Jobs</NavLink></>
+                }
                 <NavLink to="/faq" className={({ isActive }) => `flex px-1  font-semibold items-center text-sm h-full ${isActive ? 'text-blue-400 font-bold' : ''} duration-300`} >FAOs</NavLink>
             </ul>
             <div className='flex items-center gap-8'>
-               <NavLink to="/messages"  className={({ isActive }) => `gap-1 hidden px-1  font-semibold sm:flex items-center text-sm h-full ${isActive ? 'text-blue-400 font-bold' : ''} duration-300`} >
-             <div className="relative">
-             <NotificationBadge
-              count={newMessage}
-              effect = {Effect.SCALE}
-              />
-               <RiMessage2Line className='text-3xl'/>
-             </div>
-
-               </NavLink>
-               <NavLink to="/notifications"  className={({ isActive }) => `gap-1 px-1  font-semibold items-center flex text-sm h-full ${isActive ? 'text-blue-400 font-bold' : ''} duration-300`} >
-               <div className='relative'>
-                <NotificationBadge
-                count={notificationCount}
-                effect={Effect.SCALE}
-                />
-               <MdOutlineNotifications className='text-3xl'/>
-               </div>
-               </NavLink>
                 <Popover>
                     {user && <PopoverTrigger asChild>
                         <Avatar>
@@ -106,16 +86,16 @@ const Navbar = ({mobileNav}) => {
                             </div>
                         </div>
                         <div className='flex flex-col '>
-                           {user?.role==="student"&&<div className='mt-2 flex justify-start gap-1 items-center text-slate-300'>
+                            {user?.role === "student" && <div className='mt-2 flex justify-start gap-1 items-center text-slate-300'>
                                 <User2 className='text-xs' />
                                 <Link to="/user/profile" className='hover:underline'>
                                     View profile
                                 </Link>
                             </div>}
-                            <div className={`${user?.role==="student"?"mt-2":"mt-4"} flex justify-start gap-1 items-center text-slate-300`}>
+                            <div className={`${user?.role === "student" ? "mt-2" : "mt-4"} flex justify-start gap-1 items-center text-slate-300`}>
                                 <LogOut />
                                 <p className='cursor-pointer hover:underline'
-                            onClick={() => setIsDialogBoxOpen(true)}>Logout</p>
+                                    onClick={() => setIsDialogBoxOpen(true)}>Logout</p>
                             </div>
                         </div>
                     </PopoverContent>
@@ -150,7 +130,7 @@ const Navbar = ({mobileNav}) => {
                 </DialogContent>
                 <Toaster />
             </Dialog>
-            <MobileNav mobileNav={mobileNav}/>
+            <MobileNav mobileNav={mobileNav} />
         </div>
     )
 }

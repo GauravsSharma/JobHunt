@@ -52,4 +52,8 @@ const jobSchema = new mongoose.Schema({
     questions:[{type:String}]
 }, { timestamps: true })
 
+jobSchema.index({ title: 'text', description: 'text', requirement: 'text' })
+jobSchema.index({location: 1 , salary:1})
+jobSchema.index({salary:1})
+
 export const JobModel = mongoose.model("Job", jobSchema)

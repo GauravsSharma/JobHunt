@@ -11,7 +11,7 @@ import Internships from './pages/Internships';
 import { useDispatch, useSelector } from 'react-redux';
 import Profile from './pages/Profile';
 import JobDetail from './pages/JobDetail';
-import { getJobs } from './actions/Job';
+import { getJobs, getLatestJobs } from './actions/Job';
 import Loader from './components/shared/loader/Loader';
 import Companies from './components/admin/Companies';
 import AddCompany from './components/admin/AddCompany';
@@ -44,107 +44,10 @@ const App = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getUser());
+    dispatch(getLatestJobs())
   }, [])
 
-  useEffect(() => {
-    if (user) {
-      const socket = io("https://jobhunt-iq3t.onrender.com", {
-        query: {
-          userId: user._id
-        }
-      })
-      dispatch(setSocket(socket))
-    }
-  }, [user])
 
-  useEffect(() => {
-    if (!socket) return;  // Ensure socket is available before adding listeners
-    const handleNewMessage = (new_message) => {
-      dispatch(setMessages([...messages, new_message]));
-
-      if (!selectedUser) {
-        if (unreadMessageObj) {
-          dispatch(getConversation())
-          let count = unreadMessageObj[new_message?.senderId];
-          count = count + 1;
-          dispatch(setUnreadMessageObjByKey({ count, senderId: new_message.senderId }))
-        }
-        if (location.pathname !== "/messages") {
-          getUserName(new_message.senderId).then((data) => {
-            toast.message(`New message from ${data.fullname}`);
-            const count = newMessage + 1;
-            dispatch(setNewMessage(count));
-            const notificationObj = {
-              type: "incoming message",
-              data
-            }
-            dispatch(setNotifications([...notifications, notificationObj]))
-          });
-        }
-        return;
-      }
-
-      else if (new_message.senderId !== selectedUser?._id) {
-        if (unreadMessageObj) {
-          dispatch(getConversation())
-          let count = unreadMessageObj[new_message?.senderId];
-          count = count + 1;
-          dispatch(setUnreadMessageObjByKey({ count, senderId: new_message.senderId }))
-        }
-        if (location.pathname !== "/messages") {
-          getUserName(new_message.senderId).then((data) => {
-            toast.message(`New message from ${data.fullname}`);
-            const count = newMessage + 1;
-            dispatch(setNewMessage(count));
-            const notificationObj = {
-              type: "incoming_message",
-              data
-            }
-            dispatch(setNotifications([...notifications, notificationObj]))
-          });
-        }
-      }
-    };
-    const handleProfileView = (id) => {
-      getUserName(id).then((data) => {
-        toast.message(`${data.fullname} viewed your profile.`);
-        const count = notificationCount + 1;
-        dispatch(setNotificationCount(count))
-        const notificationObj = {
-          type: "profile_view",
-          data
-        }
-        dispatch(setNotifications([...notifications, notificationObj]))
-      });
-    };
-    const handleApplicationStatusChanged = (status) => {
-      toast.message("Appication status changed");
-      const count = notificationCount + 1;
-      dispatch(setNotificationCount(count))
-      const notificationObj = {
-        type: "status_changed",
-        data: status.status
-      }
-
-      dispatch(setNotifications([...notifications, notificationObj]))
-    }
-    socket.on("new_message", handleNewMessage);
-    socket.on("profile_view", handleProfileView);
-    socket.on("status_changed", handleApplicationStatusChanged);
-
-    return () => {
-      socket.off("new_message", handleNewMessage);
-      socket.off("profile_view", handleProfileView);
-    };
-  }, [socket, messages, selectedUser, dispatch, newMessage, notificationCount]);
-
-  const getUserName = async (id) => {
-    const res = await dispatch(getUserProfilePhotoAndName(id))
-    if (res.error) {
-      return;
-    }
-    return res.payload;
-  }
 
   const appRouter = [
     {
@@ -180,14 +83,6 @@ const App = () => {
       element: < Answers />,
     },
     {
-      path: '/messages',
-      element: < Messages setFooter={setFooter} setMobileNav={setMobileNav} />,
-    },
-    {
-      path: '/messages/:id',
-      element: < Messages setFooter={setFooter} setMobileNav={setMobileNav} />,
-    },
-    {
       path: '/job/:jobId/apply/submit-application',
       element: < SubmitApplication />,
     },
@@ -195,10 +90,7 @@ const App = () => {
       path: '/job/:jobId/apply/submit-application/success',
       element: < SubmitApplicationSuccess />,
     },
-    {
-      path: '/notifications',
-      element: < Notifications />,
-    },
+   
     //admin route
     {
       path: '/admin/companies',
@@ -235,7 +127,7 @@ const App = () => {
     },
 
   ];
-  if (userLoading && jobLoading) {
+  if (userLoading) {
     return <Loader />;
   }
   return (
