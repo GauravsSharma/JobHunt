@@ -3,12 +3,12 @@ import { DiNancy } from "react-icons/di";
 import logo from "../../assets/logo.png"
 const Footer = () => {
     return (
-        <footer className="rounded-lg shadow dark:bg-gray-900 px-5 md:px-20 pb-20 sm:pb-0">
+        <footer className="rounded-lg shadow dark:bg-gray-900  md:px-20 pb-20 sm:pb-0">
             <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
                 <div className="flex sm:items-center sm:justify-between justify-start items-start flex-col sm:flex-row">
                     <Link to="/" className='flex justify-center items-center'>
         
-                           <img src={logo} alt="" className='h-10' /></Link>
+                           <img src={logo} alt="" className='h-7 sm:h-10' /></Link>
                     <ul className="flex flex-wrap items-center mb-3 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400 mt-3">
                         <li>
                             <Link to="#" className="hover:underline me-4 md:me-6">About</Link>
